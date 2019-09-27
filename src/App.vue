@@ -1,28 +1,75 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="main">
+    <app-header/>
+    <div class="container">
+        <app-form :addToDo="addToDo"/>
+        <app-list :items="todos" :toggleCompletion="completeToDo"/>
+    </div>
   </div>
 </template>
 
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header.vue';
+import Form from './components/Form.vue';
+import List from './components/List.vue';
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  components : {
+    'app-header' : Header, 
+    'app-form' : Form, 
+    'app-list' : List
+  }, 
+  data : function(){
+    return {
+      todos : []
+    }
+  }, 
+  methods : {
+    addToDo : function(newItem){
+
+      const addedItem = {
+        id : Date.now(),
+        task : newItem,
+        completed : false
+      }
+      
+      this.todos = [...this.todos, addedItem]
+
+    }, 
+    completeToDo : function(id){
+
+       let index = this.todos.findIndex(item => item.id == id);
+
+       this.todos[index].completed = !this.todos[index].completed
+
+    }
   }
+
 }
 </script>
 
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+  *,*::before,*::after{
+    margin:0;
+    padding:0;
+    box-sizing:inherit;
+  }
+  html{
+    box-sizing:border-box;
+    font-size:62.5%;
+  }
+  body{
+    background:#edf8ff;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  .container{
+    width:50%;
+    margin:2rem auto;
+  }
 </style>
